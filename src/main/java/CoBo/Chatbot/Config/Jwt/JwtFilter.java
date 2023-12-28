@@ -26,32 +26,16 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        if(request.getServletPath().startsWith("/api/auth")){
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if(authorization == null || !authorization.startsWith("Bearer ")){
-            filterChain.doFilter(request, response);
-            return;
+        if(authorization != null && authorization.startsWith("Bearer ")){
+            String token = authorization.split(" ")[1];
+            if(jwtTokenProvider.isAccessToken(token)){
+                Integer userId = jwtTokenProvider.getUserId(token);
+                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userId, null, List.of(new SimpleGrantedAuthority("USER"))));
+            }
         }
 
-        String token = authorization.split(" ")[1];
-
-        if(!jwtTokenProvider.isAccessToken(token)){
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        Integer userId = jwtTokenProvider.getUserId(token);
-
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(userId, null, List.of(new SimpleGrantedAuthority("USER")));
-
-
-        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         filterChain.doFilter(request, response);
 
     }
