@@ -2,7 +2,9 @@ package CoBo.Chatbot.Service.Impl;
 
 import CoBo.Chatbot.Config.Jwt.JwtTokenProvider;
 import CoBo.Chatbot.Data.Dto.Auth.Req.AuthPostLoginReq;
+import CoBo.Chatbot.Data.Dto.Auth.Req.AuthPostReissueReq;
 import CoBo.Chatbot.Data.Dto.Auth.Res.AuthPostLoginRes;
+import CoBo.Chatbot.Data.Dto.Auth.Res.AuthPostReissueRes;
 import CoBo.Chatbot.Data.Entity.User;
 import CoBo.Chatbot.Repository.UserRepository;
 import CoBo.Chatbot.Service.AuthService;
@@ -52,5 +54,16 @@ public class AuthServiceImpl implements AuthService {
     public ResponseEntity<HttpStatus> check(Authentication authentication) {
         authentication.getName();
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<AuthPostReissueRes> postReissue(AuthPostReissueReq authPostReissueReq) {
+
+        User user = userRepository.findByRefreshToken(authPostReissueReq.getRefreshToken());
+
+        return new ResponseEntity<>(AuthPostReissueRes.builder()
+                .accessToken(jwtTokenProvider.createAccessToken(user.getId()))
+                .refreshToken(authPostReissueReq.getRefreshToken())
+                .build(), HttpStatus.OK);
     }
 }

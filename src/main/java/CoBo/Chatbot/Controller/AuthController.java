@@ -1,7 +1,9 @@
 package CoBo.Chatbot.Controller;
 
 import CoBo.Chatbot.Data.Dto.Auth.Req.AuthPostLoginReq;
+import CoBo.Chatbot.Data.Dto.Auth.Req.AuthPostReissueReq;
 import CoBo.Chatbot.Data.Dto.Auth.Res.AuthPostLoginRes;
+import CoBo.Chatbot.Data.Dto.Auth.Res.AuthPostReissueRes;
 import CoBo.Chatbot.Service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -44,6 +46,17 @@ public class AuthController {
     })
     public ResponseEntity<HttpStatus> getCheck(@Parameter(hidden = true) Authentication authentication){
         return authService.check(authentication);
+    }
+
+    @PostMapping("/reissue")
+    @Operation(summary = "AccessToken 재발급 API", description = "RefreshToken 사용하여 AccessToken 재발급")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "성공",
+                    content = @Content(schema = @Schema(implementation = AuthPostReissueRes.class), mediaType = "application/json")),
+            @ApiResponse(responseCode = "403", description = "인증실패", content = @Content())
+    })
+    public ResponseEntity<AuthPostReissueRes> postReissue(@RequestBody AuthPostReissueReq authPostReissueReq){
+        return authService.postReissue(authPostReissueReq);
     }
 
 }
