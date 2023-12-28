@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +42,11 @@ public class AuthServiceImpl implements AuthService {
                     .refreshToken(refreshToken)
                     .build(),
                 HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<HttpStatus> check(Authentication authentication) {
+        authentication.getName();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
