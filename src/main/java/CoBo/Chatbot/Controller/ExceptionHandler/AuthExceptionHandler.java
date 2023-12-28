@@ -11,6 +11,6 @@ public class AuthExceptionHandler{
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<String> AuthNullPointerExceptionHandler(){
-        return new ResponseEntity<>("인증에 필요한 정보가 누락되었습니다.", HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>("인증에 필요한 정보가 누락되었거나 잘못된 정보입니다.", HttpStatus.FORBIDDEN);
     }
 }
