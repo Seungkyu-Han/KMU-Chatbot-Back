@@ -20,13 +20,13 @@ public class User {
 
     private String password;
 
-    private String accessToken;
+    private String refreshToken;
 
     @Builder
-    public User(Integer id, String email, String password, String accessToken){
+    public User(Integer id, String email, String password, String refreshToken){
         this.id = id;
         this.email = email;
         this.password = password;
-        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 }
