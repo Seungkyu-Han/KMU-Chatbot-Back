@@ -18,10 +18,10 @@ public class SwaggerConfig {
         SecurityScheme securityScheme = new SecurityScheme()
                 .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
                 .in(SecurityScheme.In.HEADER).name("Authorization");
-        SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearer Auth");
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList("Bearer");
         return new OpenAPI()
                 .info(new Info().title("KMU-Chat bot"))
-                .components(new Components().addSecuritySchemes("bearer Auth", securityScheme))
+                .components(new Components().addSecuritySchemes("Bearer", securityScheme))
                 .security(Collections.singletonList(securityRequirement));
     }
 
