@@ -27,10 +27,10 @@ public class AuthServiceImpl implements AuthService {
         User user = userRepository.findByEmail(authPostLoginReq.getEmail());
 
         if(user == null)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         if(!bCryptPasswordEncoder.matches(authPostLoginReq.getPassword(), user.getPassword())){
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         String accessToken = jwtTokenProvider.createAccessToken(user.getId());
