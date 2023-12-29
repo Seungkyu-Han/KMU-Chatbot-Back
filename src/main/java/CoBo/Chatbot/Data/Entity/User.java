@@ -1,8 +1,7 @@
 package CoBo.Chatbot.Data.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import CoBo.Chatbot.Data.Enum.RoleEnum;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,20 +12,27 @@ import lombok.NoArgsConstructor;
 public class User {
 
     @Id
-    private Integer id;
+    private Integer studentId;
 
-    @Column(length = 20)
+    @Column(length = 5)
+    private String name;
+
     private String email;
 
-    private String password;
+    private Integer kakaoId;
 
-    private String refreshToken;
+    @Enumerated(EnumType.ORDINAL)
+    private RoleEnum role;
+
+    private String accessToken;
 
     @Builder
-    public User(Integer id, String email, String password, String refreshToken){
-        this.id = id;
+    public User(Integer studentId, String name, String email, Integer kakaoId, RoleEnum role, String accessToken){
+        this.studentId = studentId;
+        this.name = name;
         this.email = email;
-        this.password = password;
-        this.refreshToken = refreshToken;
+        this.kakaoId = kakaoId;
+        this.role = role;
+        this.accessToken = accessToken;
     }
 }
